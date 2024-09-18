@@ -1,0 +1,80 @@
+﻿@model RegisterDto
+@inject IConfiguration config
+@{
+    var sitekey = config["reCaptchaSettings:SiteKey"];
+    ViewData["Title"] = "Index";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4" style="background-color: #1c1c1e; color: #fff; max-width: 400px; width: 100%; border-radius: 10px;">
+        <div class="text-center">
+            <h3 class="mb-2">Üye ol</h3>
+            <p class="mb-4" style="font-size: 0.9em;">Kayıt olmanız için bazı bilgilere ihtiyacımız var. Lütfen formu eksiksiz olarak doldurun.</p>
+        </div>
+        <form asp-controller="Register" asp-action="Index" method="post" onsubmit="onSubmit(event)">
+            <input type="hidden" id="recaptchaTokenInputId" asp-for="RecaptchaToken" />
+            <div class="form-group">
+                <label for="isim">İsim</label>
+                <input asp-for="Name" class="form-control" placeholder="Adınız" style="background-color: #333; color: #fff; border: none;" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="soyisim">Soyisim</label>
+                <input asp-for="Surname" class="form-control" placeholder="Soyadınız" style="background-color: #333; color: #fff; border: none;" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="username">Kullanıcı Adın</label>
+                <input asp-for="Username" class="form-control" placeholder="Rumuz" style="background-color: #333; color: #fff; border: none;" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="email">E-posta adresin</label>
+                <input asp-for="Email" class="form-control" placeholder="E-posta adresiniz" style="background-color: #333; color: #fff; border: none;" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="password">Şifren</label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Şifre" style="background-color: #333; color: #fff; border: none;" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="password">Şifrenizi Tekrar Giriniz</label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Şifre" style="background-color: #333; color: #fff; border: none;" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                    <div id="html_element"></div>
+                    <hr />
+                </div>
+            
+            <div class="form-group mt-4 text-center">
+                <button type="submit" class="btn" style="background-color: #333; color: #fff; border: none; width: 100%;">Üye Ol</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script type="text/javascript">
+    var onloadCallback = function () {
+        grecaptcha.render('html_element', {
+            'sitekey': '@sitekey'
+        });
+    };
+    function onSubmit(event) {
+        var token = grecaptcha.getResponse();
+        document.getElementById("recaptchaTokenInputId").value = token
+    }
+
+</script>
+
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+</script>

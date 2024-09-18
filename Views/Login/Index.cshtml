@@ -1,0 +1,52 @@
+﻿@model LoginDto
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4" style="background-color: #1c1c1e; color: #fff; max-width: 400px; width: 100%; border-radius: 10px;">
+        <div class="text-center">
+            <h3 class="mb-4">Tekrar hoşgeldin.</h3>
+        </div>
+        <form asp-controller="Login" asp-action="Index" method="post">
+            <div class="form-group">
+                <label for="email">Kullanıcı Adın</label>
+                <input asp-for="Username" class="form-control" placeholder="sen@gmail.com" style="background-color: #333; color: #fff; border: none;" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <label for="password">Şifren / </label>
+                <a href="/Login/ForgotPassword" class="float-right" style="color: #fff; font-size: 0.9em;">Şifrenizi mi unuttunuz ?</a>
+                <input asp-for="Password" type="password" class="form-control" placeholder="En az 4 karakter" style="background-color: #333; color: #fff; border: none;" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <!-- Social Login Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+                <a href="@Url.Action("FacebookLogin", "Login")" class="btn btn-light d-flex align-items-center" style="width: 48%; background-color: #4267B2; color: white; text-decoration: none; border-radius: 5px;">
+                    <i class="fab fa-facebook-f mr-2"></i> <!-- Facebook Icon -->
+                    <span>Facebook ile giriş yap</span>
+                </a>
+                <a href="@Url.Action("GoogleLogin", "Login")" class="btn btn-light d-flex align-items-center" style="width: 48%; background-color: #DB4437; color: white; text-decoration: none; border-radius: 5px;">
+                    <i class="fab fa-google mr-2"></i> <!-- Google Icon -->
+                    <span>Google ile giriş yap</span>
+                </a>
+            </div>
+
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-primary btn-block" style="background-color: #007bff; border: none;">Giriş Yap</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="/Register/Index" style="color: #fff; font-size: 0.9em;">Bir hesabın yok mu?</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
